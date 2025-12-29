@@ -1,0 +1,7 @@
+2025-12-29 10:15:01,admin,Admin,Login Success
+2025-12-29 10:15:32,admin,Admin,Created Account 1001
+2025-12-29 10:16:06,admin,Admin,Changed status of 1001 to Active
+2025-12-29 10:16:43,1001,Customer,Login Failed
+2025-12-29 10:16:57,addy01,Customer,Login Success
+2025-12-29 10:17:19,addy01,Customer,Deposited 5000.0
+2025-12-29 10:17:29,addy01,Customer,Withdrew 2000.0
