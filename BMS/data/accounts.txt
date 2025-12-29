@@ -1,1 +1,2 @@
-1001,Aditya Garg,addy01,1234,Savings,4000.0,Active
+1001,Aditya Garg,addy01,1234,Savings,0.0,Inactive
+1002,Aditi,aditi01,5678,Savings,7000.0,Active

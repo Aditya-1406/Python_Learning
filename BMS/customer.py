@@ -1,4 +1,4 @@
-from file_handler import read_accounts
+from file_handler import read_accounts, STATEMENTS_FILE
 import os
 
 
@@ -39,12 +39,12 @@ def check_balance(user_id):
 def view_statement(account_no):
     print("\n--- Bank Statement ---")
 
-    if not os.path.exists("data/statements.txt"):
+    if not os.path.exists(STATEMENTS_FILE):
         print("No transactions found")
         return
 
     found = False
-    with open("data/statements.txt", "r") as file:
+    with open(STATEMENTS_FILE, "r") as file:
         for line in file:
             data = line.strip().split(",")
             if data[1] == account_no:

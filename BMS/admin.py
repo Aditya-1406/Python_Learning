@@ -1,4 +1,4 @@
-from file_handler import read_accounts, write_accounts, log_activity
+from file_handler import read_accounts, write_accounts, log_activity,  LOGS_FILE
 import os
 
 
@@ -79,7 +79,19 @@ def change_account_status():
         if acc["account_no"] == account_no:
             found = True
             print(f"Current Status: {acc['status']}")
-            new_status = input("Enter New Status (Active/Inactive): ")
+
+            if acc["balance"] <= 0:
+                deposit_needed = input("Account has negative balance. Deposit required to activate. Proceed? (y/n): ")
+                if deposit_needed.lower() != 'y':
+                    print("❌ Operation cancelled")
+                    return 
+                else:
+                    amount = float(input("Enter deposit amount: "))
+                    acc["balance"] += amount
+                    print(f"✅ Deposited ₹{amount}. New Balance: ₹{acc['balance']}")
+                    new_status = "Active"
+            else:
+                new_status = input("Enter New Status (Active/Inactive): ")
 
             if new_status not in ["Active", "Inactive"]:
                 print("❌ Invalid status")
@@ -99,10 +111,10 @@ def change_account_status():
 
 def view_logs():
     print("\n--- System Logs ---")
-    if not os.path.exists("data/logs.txt"):
+    if not os.path.exists(LOGS_FILE):
         print("No logs available")
         return
 
-    with open("data/logs.txt", "r") as file:
+    with open(LOGS_FILE, "r") as file:
         for line in file:
             print(line.strip())

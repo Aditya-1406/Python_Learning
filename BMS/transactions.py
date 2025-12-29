@@ -81,6 +81,11 @@ def transfer(from_acc_no, to_acc_no, amount):
 
     sender["balance"] -= amount
     receiver["balance"] += amount
+
+    if(sender["balance"] <= 0):
+        sender["status"] = "Inactive"
+        
+
     write_accounts(accounts)
 
     add_statement(from_acc_no, "Transfer Out", amount, sender["balance"])

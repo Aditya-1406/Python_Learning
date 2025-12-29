@@ -5,3 +5,24 @@
 2025-12-29 10:16:57,addy01,Customer,Login Success
 2025-12-29 10:17:19,addy01,Customer,Deposited 5000.0
 2025-12-29 10:17:29,addy01,Customer,Withdrew 2000.0
+2025-12-29 10:24:27,admin,Admin,Login Success
+2025-12-29 10:28:46,admin ,Admin,Login Failed
+2025-12-29 10:28:55,admin,Admin,Login Success
+2025-12-29 10:31:43,addy01,Customer,Login Success
+2025-12-29 10:37:04,admin,Admin,Login Success
+2025-12-29 10:37:34,admin,Admin,Created Account 1002
+2025-12-29 10:38:02,aditi01,Customer,Login Success
+2025-12-29 10:38:19,aditi01,Customer,Transferred 1000.0 to 1001
+2025-12-29 10:39:03,admin,Admin,Login Success
+2025-12-29 10:39:23,admin,Admin,Changed status of 1002 to Inactive
+2025-12-29 10:39:34,addy01,Customer,Login Success
+2025-12-29 10:40:37,admin,Admin,Login Success
+2025-12-29 10:40:51,admin,Admin,Changed status of 1002 to Active
+2025-12-29 10:41:09,addy01,Customer,Login Success
+2025-12-29 10:41:21,addy01,Customer,Transferred 5000.0 to 1002
+2025-12-29 10:43:48,addy01,Customer,Deposited 1000.0
+2025-12-29 10:49:17,addy01,Customer,Login Success
+2025-12-29 10:49:34,addy01,Customer,Transferred 1000.0 to 1002
+2025-12-29 10:49:56,admin,Admin,Login Success
+2025-12-29 10:50:54,admin,Admin,Changed status of 1001 to Active
+2025-12-29 10:51:43,admin,Admin,Changed status of 1001 to Inactive
