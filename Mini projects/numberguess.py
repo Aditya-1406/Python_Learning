@@ -12,7 +12,7 @@ def guess_number():
             attempts += 1
             
             if user_guess < 1 or user_guess > 100:
-                print("Please guess a number within the range of 1 to 100.")
+                print("Number out of range")
                 continue
             
             if user_guess < number_to_guess:

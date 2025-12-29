@@ -2,22 +2,19 @@
 
 
 def create_list():
-    """Create a new to-do list."""
     return []
 
 def add_task(todo_list, task):
-    """Add a task to the to-do list."""
+   
     todo_list.append(task)
 
 def remove_task(todo_list, task):
-    """Remove a task from the to-do list."""
     if task in todo_list:
         todo_list.remove(task)
     else:
         print("Task not found in the list.")
 
 def view_tasks(todo_list):
-    """View all tasks in the to-do list."""
     if not todo_list:
         print("No tasks in the to-do list.")
     else:
@@ -25,7 +22,7 @@ def view_tasks(todo_list):
             print(f"{idx}. {task}")
 
 def update_task(todo_list, old_task, new_task):
-    """Update a task in the to-do list."""
+   
     if old_task in todo_list:
         index = todo_list.index(old_task)
         todo_list[index] = new_task
