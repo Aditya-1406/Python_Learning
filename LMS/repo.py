@@ -82,7 +82,7 @@ def list_all_books():
 
 # Repo for members
 
-def create_member(name, email, password, role):
+def create_member(name, email, password, role='member'):
     """Insert a new member. Returns the new member_id."""
     try:
         cursor.execute(
@@ -135,15 +135,16 @@ def create_loan(borrowed_on, due_on, member_id, book_id):
             ''',
             (borrowed_on, due_on, member_id, book_id)
         )
+        
         conn.commit()
         return cursor.lastrowid
     except sqlite3.IntegrityError as e:
         # Handles FK constraints
         raise ValueError(f"Failed to create loan: {e}")
     
-def get_loan_by_id(loan_id):
+def get_loan_by_id(member_id):
     """Fetch a loan by id. Returns a sqlite3.Row or None."""
-    cursor.execute('SELECT * FROM loan WHERE loan_id = ?', (loan_id,))
+    cursor.execute('SELECT * FROM loan WHERE member_id = ?', (member_id,))
     return cursor.fetchone()
 
 def list_all_loans():

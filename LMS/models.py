@@ -44,5 +44,9 @@ cursor.execute('''
                )
 ''')
 
+cursor.execute('''
+    INSERT OR IGNORE INTO member (member_id, name, email, password, role)
+    VALUES (1, 'Admin', 'admin@gmail.com','adminpass', 'admin')
+''')
 conn.commit()
 conn.close()
