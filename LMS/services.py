@@ -209,11 +209,19 @@ def list_loan_byid(member_id):
 
     print(f"Loans for member ID {member_id}:")
     for loan in loans:
-            print(
+            if loan['is_paid']:
+                print(
+                    f"Loan ID: {loan['loan_id']}, Book ID: {loan['book_id']}, "
+                    f"Borrowed On: {loan['borrowed_on']}, Due On: {loan['due_on']}, "
+                    f"Returned On: {loan['returned_on']}"
+                    f" Fine Amount: {loan['fine']}, Payment Status: Paid"
+                )
+            else:
+                print(
                 f"Loan ID: {loan['loan_id']}, Book ID: {loan['book_id']}, "
                 f"Borrowed On: {loan['borrowed_on']}, Due On: {loan['due_on']}, "
                 f"Returned On: {loan['returned_on']}"
-                f" Fine Amount: {loan['fine']}, Payment Status: {loan['is_paid']}"
+                f" Fine Amount: {loan['fine']}, Payment Status: Not Paid"
             )
 
 
@@ -228,7 +236,11 @@ def list_all_loans_admin():
 
     print("Loans:")
     for loan in loans:
-        print(f"ID: {loan['loan_id']}, Member ID: {loan['member_id']}, Book ID: {loan['book_id']}, Borrowed On: {loan['borrowed_on']}, Due On: {loan['due_on']}, Returned On: {loan['returned_on']}, Fine Amount: {loan['fine']}, Payment Status: {loan['is_paid']}")
+        if loan['is_paid']:
+            print(f"ID: {loan['loan_id']}, Member ID: {loan['member_id']}, Book ID: {loan['book_id']}, Borrowed On: {loan['borrowed_on']}, Due On: {loan['due_on']}, Returned On: {loan['returned_on']}, Fine Amount: {loan['fine']}, Payment Status: Paid")
+        else:
+            print(f"ID: {loan['loan_id']}, Member ID: {loan['member_id']}, Book ID: {loan['book_id']}, Borrowed On: {loan['borrowed_on']}, Due On: {loan['due_on']}, Returned On: {loan['returned_on']}, Fine Amount: {loan['fine']}, Payment Status: Not Paid")
+
 
 def mark_loan_returned_admin():
     """Mark a loan as returned (admin only)."""
@@ -248,6 +260,16 @@ def mark_loan_returned_admin():
             print(f"✅ Loan with ID {loan_id} marked as returned on {returned_on}, with a fine of amount {fine_cost[0]}")
         else:
             print(f"❌ No loan found with ID {loan_id}.")
+
+        succ = input("Are you paying now (yes/no) : ")
+        if succ == "yes":
+            if(payment(loan_id,1)):
+                print(f"✅ Loan with ID {loan_id} marked as returned on {returned_on}, with a fine of amount {fine_cost[0]} has been cleared")
+        else:
+            payment(loan_id,0)
+            print(f"✅ Loan with ID {loan_id} marked as returned on {returned_on}, with a fine of amount {fine_cost[0]} has been pending")
+            
+        
     except ValueError as e:
         print(f"❌ Error marking loan as returned: {e}")
 

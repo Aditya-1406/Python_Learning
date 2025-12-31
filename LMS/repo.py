@@ -212,6 +212,12 @@ def fetch_fine(loan_id):
     cursor.execute('''SELECT fine FROM loan WHERE loan_id = ?''',(loan_id,))
     return cursor.fetchone()
 
+def payment(loan_id,success):
+    cursor.execute('''UPDATE loan SET is_paid = ? WHERE loan_id = ?''',(success,loan_id))
+    return cursor.rowcount
+
+
+
 
 # ---------- Lifecycle helper ----------
 
