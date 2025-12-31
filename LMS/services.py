@@ -200,13 +200,23 @@ def create_loan_admin():
 
     
 def list_loan_byid(member_id):
-    """List loan details by loan id (admin only)."""
+    """List all loans for a given member (admin only)."""
+    loans = get_loan_by_id(member_id)  # SELECT * FROM loan WHERE member_id = ?
+    
+    if not loans:
+            print(f"❌ No loans found for member ID {member_id}.")
+            return
 
-    member = get_loan_by_id(member_id)
-    if member:
-        print(f"Loan Details - ID: {member['loan_id']}, Member ID: {member['member_id']}, Book ID: {member['book_id']}, Borrowed On: {member['borrowed_on']}, Due On: {member['due_on']}, Returned On: {member['returned_on']}")
-    else:
-        print(f"❌ No loan found with ID {member_id}.")
+    print(f"Loans for member ID {member_id}:")
+    for loan in loans:
+            print(
+                f"Loan ID: {loan['loan_id']}, Book ID: {loan['book_id']}, "
+                f"Borrowed On: {loan['borrowed_on']}, Due On: {loan['due_on']}, "
+                f"Returned On: {loan['returned_on']}"
+            )
+
+
+
 
 def list_all_loans_admin():
     """List all loans (admin only)."""

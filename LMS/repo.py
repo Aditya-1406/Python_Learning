@@ -145,7 +145,7 @@ def create_loan(borrowed_on, due_on, member_id, book_id):
 def get_loan_by_id(member_id):
     """Fetch a loan by id. Returns a sqlite3.Row or None."""
     cursor.execute('SELECT * FROM loan WHERE member_id = ?', (member_id,))
-    return cursor.fetchone()
+    return cursor.fetchall()
 
 def list_all_loans():
     """Return all loans as a list of sqlite3.Row."""
