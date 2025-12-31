@@ -1,4 +1,5 @@
 
+from datetime import datetime, timedelta
 import sqlite3
 
 # Open one connection for this module.
@@ -187,6 +188,30 @@ def delete_loan(loan_id):
     cursor.execute('DELETE FROM loan WHERE loan_id = ?', (loan_id,))
     conn.commit()
     return cursor.rowcount  # 1 if deleted, 0 if not found
+
+def cal_fine(loan_id):
+    '''Çalculating the fine'''
+    PER_DAY = 10
+    row = cursor.execute('''SELECT * FROM loan where loan_id = ?''',(loan_id,)).fetchone() # 6 col -->fine 7--> is paid
+
+    ret_on = datetime.strptime(row['returned_on'], "%Y-%m-%d")
+    bor_on = datetime.strptime(row['borrowed_on'], "%Y-%m-%d")
+    delta = (ret_on-bor_on)
+    days = delta.days
+    fine_cost = 0
+    if days> 14 :
+        days -=  14
+        fine_cost = days * PER_DAY
+    
+    cursor.execute('''UPDATE loan SET fine = ? WHERE  loan_id = ?''', (fine_cost,loan_id))
+    conn.commit()
+    return cursor.rowcount
+ 
+
+def fetch_fine(loan_id):
+    cursor.execute('''SELECT fine FROM loan WHERE loan_id = ?''',(loan_id,))
+    return cursor.fetchone()
+
 
 # ---------- Lifecycle helper ----------
 

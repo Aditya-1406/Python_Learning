@@ -213,6 +213,7 @@ def list_loan_byid(member_id):
                 f"Loan ID: {loan['loan_id']}, Book ID: {loan['book_id']}, "
                 f"Borrowed On: {loan['borrowed_on']}, Due On: {loan['due_on']}, "
                 f"Returned On: {loan['returned_on']}"
+                f" Fine Amount: {loan['fine']}, Payment Status: {loan['is_paid']}"
             )
 
 
@@ -227,7 +228,7 @@ def list_all_loans_admin():
 
     print("Loans:")
     for loan in loans:
-        print(f"ID: {loan['loan_id']}, Member ID: {loan['member_id']}, Book ID: {loan['book_id']}, Borrowed On: {loan['borrowed_on']}, Due On: {loan['due_on']}, Returned On: {loan['returned_on']}")
+        print(f"ID: {loan['loan_id']}, Member ID: {loan['member_id']}, Book ID: {loan['book_id']}, Borrowed On: {loan['borrowed_on']}, Due On: {loan['due_on']}, Returned On: {loan['returned_on']}, Fine Amount: {loan['fine']}, Payment Status: {loan['is_paid']}")
 
 def mark_loan_returned_admin():
     """Mark a loan as returned (admin only)."""
@@ -241,8 +242,10 @@ def mark_loan_returned_admin():
 
     try:
         rows_updated = mark_loan_returned(loan_id, returned_on)
-        if rows_updated:
-            print(f"✅ Loan with ID {loan_id} marked as returned on {returned_on}.")
+        fine_cal = cal_fine(loan_id)
+        fine_cost = fetch_fine(loan_id)
+        if rows_updated and fine_cal:
+            print(f"✅ Loan with ID {loan_id} marked as returned on {returned_on}, with a fine of amount {fine_cost[0]}")
         else:
             print(f"❌ No loan found with ID {loan_id}.")
     except ValueError as e:

@@ -49,5 +49,13 @@ cursor.execute('''
     INSERT OR IGNORE INTO member (member_id, name, email, password, role)
     VALUES (1, 'Admin', 'admin@gmail.com','adminpass', 'admin')
 ''')
+
+cursor.execute('''
+ALTER TABLE loan ADD COLUMN fine INTEGER NOT NULL DEFAULT 0;
+''')
+
+cursor.execute('''
+ALTER TABLE loan ADD COLUMN is_paid BOOLEAN DEFAULT FALSE;
+''')
 conn.commit()
 conn.close()
