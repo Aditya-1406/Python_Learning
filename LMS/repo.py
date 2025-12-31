@@ -128,6 +128,12 @@ def delete_member(member_id):
 def create_loan(borrowed_on, due_on, member_id, book_id):
     """Insert a new loan. Returns the new loan_id."""
     try:
+        row = cursor.execute('''SELECT copies_available FROM book WHERE book_id = ?''', (book_id,)).fetchone()
+        if row is None:
+            raise ValueError("Book not found.")
+        if row[0] <= 0:
+            raise ValueError("No copies available for this book.")
+
         cursor.execute(
             '''
             INSERT INTO loan (borrowed_on, due_on, member_id, book_id)
@@ -135,6 +141,12 @@ def create_loan(borrowed_on, due_on, member_id, book_id):
             ''',
             (borrowed_on, due_on, member_id, book_id)
         )
+
+        cursor.execute('''
+            UPDATE book
+            SET copies_available = copies_available - 1
+            WHERE book_id = ? AND copies_available > 0
+        ''', (book_id,))
         
         conn.commit()
         return cursor.lastrowid
@@ -162,6 +174,11 @@ def mark_loan_returned(loan_id, returned_on):
         ''',
         (returned_on, loan_id)
     )
+    cursor.execute('''
+        UPDATE book 
+        SET copies_available = copies_available + 1
+        WHERE book_id = (SELECT book_id FROM loan WHERE loan_id = ?)
+        ''', (loan_id,))           
     conn.commit()
     return cursor.rowcount  # 1 if updated, 0 if loan_id not found
 

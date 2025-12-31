@@ -62,14 +62,14 @@ def loan_menu():
         print("5. Delete Loan")
         print("6. Go Back")
 
-        choice = input("Enter your choice (1-4): ").strip()
+        choice = input("Enter your choice (1-6): ").strip()
 
         if choice == '1':
             create_loan_admin()
         elif choice == '2':
             list_all_loans_admin()
         elif choice == '3':
-            member_id = int(input("Enter loan ID to fetch: "))
+            member_id = int(input("Enter member Id to fetch: "))
             list_loan_byid(member_id)
         elif choice == '4':
             mark_loan_returned_admin()
