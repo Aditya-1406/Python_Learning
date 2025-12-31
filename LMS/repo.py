@@ -214,6 +214,7 @@ def fetch_fine(loan_id):
 
 def payment(loan_id,success):
     cursor.execute('''UPDATE loan SET is_paid = ? WHERE loan_id = ?''',(success,loan_id))
+    conn.commit()
     return cursor.rowcount
 
 
