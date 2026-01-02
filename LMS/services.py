@@ -1,20 +1,6 @@
 from datetime import datetime, timedelta
-from auth import is_admin,authenticate
 from repo import *
-from getpass import getpass
-
-
-
-# def admin_required():
-#     input_admin_id = int(input("Enter Admin ID: "))
-#     input_admin_password = getpass("Enter Admin Password: ")
-#     if not is_admin(input_admin_id):
-#         print("❌ Access denied: Admins only.")
-#         return False
-#     if not authenticate(input_admin_id, input_admin_password):
-#         print("❌ Authentication failed.")
-#         return False
-#     return True
+from Logs import *
 
 
 #for the members
@@ -28,6 +14,7 @@ def add_member():
     try:
         member_id = create_member(name, email, password, role)
         print(f"✅ Member added with ID: {member_id}")
+        member_log_create(name, email, password, role,member_id)
         return member_id
     except ValueError as e:
         print(f"❌ Error adding member: {e}")
@@ -45,6 +32,7 @@ def remove_member():
         rows_deleted = delete_member(member_id)
         if rows_deleted:
             print(f"✅ Member with ID {member_id} deleted.")
+            member_log_delete(member_id)
         else:
             print(f"❌ No member found with ID {member_id}.")
     except ValueError as e:
@@ -99,6 +87,7 @@ def add_book():
     try:
         book_id = create_book(isbn, title, author, copies_available)
         print(f"✅ Book added with ID: {book_id}")
+        book_log_created(book_id,isbn, title, author, copies_available)
         return book_id
     except ValueError as e:
         print(f"❌ Error adding book: {e}")
@@ -116,6 +105,7 @@ def remove_book():
         rows_deleted = delete_book(book_id)
         if rows_deleted:
             print(f"✅ Book with ID {book_id} deleted.")
+            book_log_delete(book_id)
         else:
             print(f"❌ No book found with ID {book_id}.")
     except ValueError as e:
@@ -155,6 +145,7 @@ def update_book_copies_admin():
         rows_updated = update_book_copies(book_id, new_copies)
         if rows_updated:
             print(f"✅ Book with ID {book_id} updated to {new_copies} copies available.")
+            book_log_update(book_id,new_copies)
         else:
             print(f"❌ No book found with ID {book_id}.")
     except ValueError as e:
@@ -194,6 +185,7 @@ def create_loan_admin():
         due_on = (datetime.now() + timedelta(days=14)).strftime("%Y-%m-%d")
         loan_id = create_loan(borrowed_on, due_on, member_id, book_id)
         print(f"✅ Loan created with ID: {loan_id}")
+        loan_log_created(loan_id,borrowed_on, due_on, member_id, book_id)
         return loan_id
     except ValueError as e:
         print(f"❌ Error creating loan: {e}")
@@ -262,12 +254,15 @@ def mark_loan_returned_admin():
         else:
             print(f"❌ No loan found with ID {loan_id}.")
 
-        succ = input("Are you paying now (yes/no) : ")
-        if succ == "yes":
+        succ = input("Are you paying now (YES/NO) : ")
+        if succ == "YES":
             if(payment(loan_id,1)):
+                loan_log_updated(loan_id,returned_on, fine_cost[0], succ)
                 print(f"✅ Loan with ID {loan_id} marked as returned on {returned_on}, with a fine of amount {fine_cost[0]} has been cleared")
         else:
             payment(loan_id,0)
+            succ = "NO"
+            loan_log_updated(loan_id,returned_on, fine_cost[0], succ)
             print(f"✅ Loan with ID {loan_id} marked as returned on {returned_on}, with a fine of amount {fine_cost[0]} has been pending")
             
         
@@ -286,6 +281,7 @@ def delete_loan_admin():
         rows_deleted = delete_loan(loan_id)
         if rows_deleted:
             print(f"✅ Loan with ID {loan_id} deleted.")
+            loan_log_delete(loan_id)
         else:
             print(f"❌ No loan found with ID {loan_id}.")
     except ValueError as e:

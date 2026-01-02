@@ -1,0 +1,3 @@
+USER CREATED : NAME - Ansh, EMAIL- ansh@gmail.com, PASSWORD- ansh, ROLE- member, MEMBER_ID - 7
+ USER DELETED : MEMBER_ID - 7
+ 
