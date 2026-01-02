@@ -5,7 +5,7 @@ import sqlite3
 # Open one connection for this module.
 # Keep it open while your app runs; close it explicitly when you're done.
 conn = sqlite3.connect('lms.db')
-conn.row_factory = sqlite3.Row  # Optional: lets you access columns by name
+conn.row_factory = sqlite3.Row  
 cursor = conn.cursor()
 
 # Always enable foreign keys on this connection.

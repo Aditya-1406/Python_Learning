@@ -2,10 +2,11 @@ from services import *
 from auth import *
 from admin import *
 from member import *
+from getpass import getpass
 
 def admin_interface():
     user_id = int(input("Enter Admin ID: "))
-    password = input("Enter Admin Password: ")
+    password = getpass("Enter Admin Password: ")
     if not check_admin(user_id, password):
         return
 
@@ -29,7 +30,7 @@ def admin_interface():
 
 def member_interface():
     user_id = int(input("Enter Member ID: "))
-    password = input("Enter Member Password: ")
+    password = getpass("Enter Member Password: ")
     if not check_member(user_id, password):
         return
 

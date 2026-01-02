@@ -1,19 +1,20 @@
 from datetime import datetime, timedelta
 from auth import is_admin,authenticate
 from repo import *
+from getpass import getpass
 
 
 
-def admin_required():
-    input_admin_id = int(input("Enter Admin ID: "))
-    input_admin_password = input("Enter Admin Password: ")
-    if not is_admin(input_admin_id):
-        print("❌ Access denied: Admins only.")
-        return False
-    if not authenticate(input_admin_id, input_admin_password):
-        print("❌ Authentication failed.")
-        return False
-    return True
+# def admin_required():
+#     input_admin_id = int(input("Enter Admin ID: "))
+#     input_admin_password = getpass("Enter Admin Password: ")
+#     if not is_admin(input_admin_id):
+#         print("❌ Access denied: Admins only.")
+#         return False
+#     if not authenticate(input_admin_id, input_admin_password):
+#         print("❌ Authentication failed.")
+#         return False
+#     return True
 
 
 #for the members
