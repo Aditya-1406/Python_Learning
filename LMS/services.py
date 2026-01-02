@@ -1,6 +1,13 @@
 from datetime import datetime, timedelta
 from repo import *
 from Logs import *
+from Error import InvalidPass
+import re 
+
+
+pattern = '^(?=.*[A-Za-z0-9])(?=.*[^A-Za-z0-9]).{8,}$'
+
+
 
 
 #for the members
@@ -8,7 +15,16 @@ def add_member():
     """Add a new member (admin only). Returns the new member_id."""
     name = input("Enter member name: ").strip().capitalize()
     email = input("Enter member email: ").strip().lower()
-    password = input("Enter member password: ").strip()
+    try:
+        password = input("Enter member password: ").strip()
+        if ((re.match(pattern,password))== None):
+            raise InvalidPass
+    except InvalidPass as e:
+        print("Password must contain minimum 8 letter, a special symbol, digit and letters")
+        return None
+    
+    
+
     role = input("Enter member role (member/admin): ").strip().lower()
 
     try:
