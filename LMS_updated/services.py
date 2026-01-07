@@ -2,9 +2,9 @@
 # lms/services.py
 from datetime import datetime, timedelta, timezone
 from typing import Optional
-from .db import Database
-from .repo import MemberRepository, BookRepository, LoanRepository
-from .models import Loan, Member, Book
+from db import Database
+from repo import MemberRepository, BookRepository, LoanRepository
+from models import Loan, Member, Book
 
 ISO = "%Y-%m-%d"
 PER_DAY  = 10 
@@ -19,6 +19,7 @@ def calulate_fine(borrowdate, returndate):
     if days> 14 :
         days -=  14
         fine_cost = days * PER_DAY
+    return fine_cost
 
 def now_iso() -> str:
     return datetime.now(timezone.utc).strftime(ISO)
@@ -35,6 +36,7 @@ class MemberService:
     def create_member(self,mem: Member):
         try:
             mem_id = self.member.create(mem)
+            mem.member_id = mem_id
             print(f"✅ Member {mem.name} added with ID: {mem.member_id}")
             return mem_id
         except Exception as e:
@@ -45,7 +47,7 @@ class MemberService:
         try:
             mem = self.member.get_by_id(mem_id)
             print(f"Id : {mem.member_id}, Name : {mem.name}, Email : {mem.email}, Role : {mem.role}  ")
-            return 
+            return mem
         except Exception as e:
             print("❌ Sorry, Some Error while Fetching the data", e)
             return None
@@ -54,7 +56,7 @@ class MemberService:
         try:
             mem = self.member.get_by_email(email)
             print(f"Id : {mem.member_id}, Name : {mem.name}, Email : {mem.email}, Role : {mem.role}  ")
-            return 
+            return mem
         except Exception as e:
             print("❌ Sorry, Some Error while Fetching the data", e)
             return None
@@ -64,7 +66,7 @@ class MemberService:
             mem_list = self.member.list()
             for mem in mem_list:
                 print(f"Id : {mem.member_id}, Name : {mem.name}, Email : {mem.email}, Role : {mem.role}  ")
-            return
+            return mem_list
         except Exception as e:
             print("❌ Sorry, Some Error while Fetching the data", e)
             return None
@@ -103,6 +105,7 @@ class BookService:
     def create_book(self,books : Book):
         try:
             book_id = self.book.create(books)
+            books.book_id = book_id
             print(f"Book {books.title} Added with Book id : {books.book_id}")
             return book_id
         except  Exception as e :
@@ -112,7 +115,7 @@ class BookService:
         try:
             bo = self.book.get_by_id(book_id)
             print(f"Id : {bo.book_id}, ISBN : {bo.isbn}, Title : {bo.title}, Author : {bo.author}, Copies : {bo.copies_available}  ")
-            return 
+            return  bo
         except Exception as e:
             print("❌ Sorry, Some Error while Fetching the data", e)
             return None
@@ -121,7 +124,7 @@ class BookService:
         try:
             bo = self.book.get_by_isbn(isbn)
             print(f"Id : {bo.book_id}, ISBN : {bo.isbn}, Title : {bo.title}, Author : {bo.author}, Copies : {bo.copies_available} ")
-            return 
+            return bo
         except Exception as e:
             print("❌ Sorry, Some Error while Fetching the data", e)
             return None
@@ -131,7 +134,7 @@ class BookService:
             book_list = self.book.list()
             for bo in book_list:
                 print(f"Id : {bo.book_id}, ISBN : {bo.isbn}, Title : {bo.title}, Author : {bo.author}, Copies : {bo.copies_available} ")
-            return
+            return book_list
         except Exception as e:
             print("❌ Sorry, Some Error while Fetching the data", e)
             return None
@@ -146,8 +149,7 @@ class BookService:
         except Exception as e:
             print("❌ Some Error while deleting the record", e)
             return None
-        
-    @staticmethod
+  
     def increment_copy(self,book_id):
         try:
             self.book.increment_copy(book_id)
@@ -156,7 +158,7 @@ class BookService:
             print("Some Error while incrementing")
             return None
         
-    @staticmethod
+  
     def decrement_copy(self,book_id):
         try:
             self.book.decrement_copy(book_id)
@@ -178,6 +180,7 @@ class LoanService:
     def create_loan(self, loan:Loan):
         try:
             loan_id = self.loans.create(loan)
+            loan.loan_id = loan_id
             print(f"✔️ Loan Created with Loan id : {loan_id}")
             self.books.decrement_copy(loan.book_id)
             return loan_id
@@ -200,7 +203,7 @@ class LoanService:
                 f"Book ID: {lo.book_id}"
             )
             print(formatted)
-            return
+            return lo
 
         except Exception as e:
             print("Some Error while fetching the data")
@@ -237,7 +240,8 @@ class LoanService:
         """Set/Update fine for a loan."""
         try:
             self.loans.set_fine(loan_id, fine)
-            print(f"✔️ Fine for loan {loan_id} set to {fine}")
+            if fine:
+                print(f"✔️ Fine for loan {loan_id} id : ₹{fine}")
             return True
         except Exception as e:
             print(f"❌ Error while setting fine for loan {loan_id}: {e}")

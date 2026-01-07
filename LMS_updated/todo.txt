@@ -1,0 +1,3 @@
+delete list_active_loans from main menu
+delete set fine from main menu
+mark returned : currently taking the input of time, after that use now_iso function

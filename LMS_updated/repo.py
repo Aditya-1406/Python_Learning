@@ -1,8 +1,8 @@
 
 import sqlite3
 from typing import List, Optional
-from .db import Database
-from .models import Member, Book, Loan
+from db import Database
+from models import Member, Book, Loan
 
 class MemberRepository:
     def __init__(self, db: Database):
