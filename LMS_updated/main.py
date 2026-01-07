@@ -12,6 +12,7 @@ from auth import (
     member_only
 )
 
+
 # ---------- INITIAL SETUP ----------
 def init_services():
     db = Database()
@@ -180,6 +181,7 @@ def mark_returned(book_ser : BookService, loan_ser : LoanService):
     loan_id = int(input("Loan ID: "))
     loan = loan_ser.get_by_id(loan_id)
     return_Date = input("Enter the Return date %Y-%m-%d : ")
+    loan.returned_on = return_Date
     is_return = loan_ser.mark_returned(loan_id, return_Date)
     book_ser.increment_copy(loan.book_id)
     if is_return:

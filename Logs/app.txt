@@ -1,0 +1,12 @@
+[2026-01-07 15:34:26] user=unknown func=my_loans args=(<services.LoanService object at 0x0000021EB8240EC0>,) kwargs={} duration_ms=4347.76
+--- PRINTED OUTPUT START ---
+Enter the Member id:  --- PRINTED OUTPUT END ---
+return=None
+EXCEPTION=ValueError("invalid literal for int() with base 10: ''")
+------------------------------------------------------------
+[2026-01-07 15:34:56] user=unknown func=my_loans args=(<services.LoanService object at 0x0000022AD1EA0EC0>,) kwargs={} duration_ms=2920.15
+--- PRINTED OUTPUT START ---
+Enter the Member id:  ℹ️ No active loans for member_id=2
+--- PRINTED OUTPUT END ---
+return=None
+------------------------------------------------------------

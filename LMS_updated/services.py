@@ -6,6 +6,7 @@ from db import Database
 from repo import MemberRepository, BookRepository, LoanRepository
 from models import Loan, Member, Book
 
+
 ISO = "%Y-%m-%d"
 PER_DAY  = 10 
 
@@ -42,6 +43,7 @@ class MemberService:
         except Exception as e:
             print(f"❌ Error adding member: {e}")
             return None
+        
     
     def get_by_id(self,mem_id: int):
         try:
