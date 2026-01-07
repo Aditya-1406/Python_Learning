@@ -17,13 +17,13 @@ def init_services():
     db = Database()
     db.migrate()
 
-    member_repo = MemberRepository(db)
-    book_repo = BookRepository(db)
-    loan_repo = LoanRepository(db)
+    mem_ser = MemberRepository(db)
+    book_ser = BookRepository(db)
+    loan_ser = LoanRepository(db)
 
-    mem_ser = MemberService(member_repo)
-    book_ser = BookService(book_repo)
-    loan_ser = LoanService(member_repo,book_repo,loan_repo)
+    mem_ser = MemberService(mem_ser)
+    book_ser = BookService(book_ser)
+    loan_ser = LoanService(mem_ser,book_ser,loan_ser)
 
     # AUTO CREATE ADMIN
     admin = mem_ser.get_by_email("admin@innova.com")
@@ -51,6 +51,7 @@ def login(mem_ser : MemberService):
 
     login_user(user)
     if user.role == 'member':
+        global memid
         memid = user.member_id
     else:
         memid = None
@@ -78,13 +79,13 @@ def delete_book(book_ser : BookService):
     print("✔️ Book deleted")
 
 
-@member_only
+@admin_only
 def get_book_by_id(book_ser : BookService):
     book = book_ser.get_by_id(int(input("Book ID: ")))
     print(book or "❌ Not found")
 
 
-@member_only
+@admin_only
 def get_book_by_isbn(book_ser : BookService):
     book = book_ser.get_by_isbn(input("ISBN: "))
     print(book or "❌ Not found")
@@ -121,7 +122,7 @@ def get_member_by_id(mem_ser : MemberService):
     else:
         mem_ser.get_by_id(memid)
 
-@member_only
+@admin_only
 def get_member_by_email(mem_ser: MemberService):
     mem_ser.get_by_email(input("Enter the mail Id : "))
 
@@ -178,12 +179,13 @@ def get_loan_by_id(loan_ser : LoanService):
 def mark_returned(book_ser : BookService, loan_ser : LoanService):
     loan_id = int(input("Loan ID: "))
     loan = loan_ser.get_by_id(loan_id)
-    return_Date = input("Enter the Return date %Y-%m-%d ")
-    loan_ser.mark_returned(loan_id, return_Date)
+    return_Date = input("Enter the Return date %Y-%m-%d : ")
+    is_return = loan_ser.mark_returned(loan_id, return_Date)
     book_ser.increment_copy(loan.book_id)
-    fine = calulate_fine(loan.borrowed_on,loan.returned_on)
-    loan_ser.set_fine(loan_id,fine)
-    print("✔️ Book returned")
+    if is_return:
+        fine = calulate_fine(loan.borrowed_on,loan.returned_on)
+        loan_ser.set_fine(loan_id,fine)
+        print("✔️ Book returned")
 
 
 @admin_only
@@ -199,39 +201,40 @@ def delete_loan(loan_ser : LoanService):
 
 # ---------- MENU ----------
 def main():
-    member_repo, book_repo, loan_repo = init_services()
+    mem_ser, book_ser, loan_ser = init_services()
 
     menus = {
         "guest": {
-            "1": ("Login", lambda: login(member_repo)),
-            "0": ("Exit", exit),
+            "1": ("Login", lambda: login(mem_ser)),
+            "5": ("Exit", exit),
         },
         "member": {
-            "1": ("List Books", lambda: list_all_books(book_repo)),
-            "2": ("Borrow Book", lambda: borrow_book(book_repo, loan_repo)),
-            "3": ("My Loans", lambda: my_loans(loan_repo)),
+            "1": ("List Books", lambda: list_all_books(book_ser)),
+            "2": ("Borrow Book", lambda: borrow_book(book_ser, loan_ser,mem_ser)),
+            "3": ("My Loans", lambda: my_loans(loan_ser)),
             "4": ("Logout", logout_user),
-            "0": ("Exit", exit),
+            "5": ("Exit", exit),
         },
         "admin": {
-            "1": ("Add Book", lambda: add_book(book_repo)),
-            "2": ("Delete Book", lambda: delete_book(book_repo)),
-            "3": ("Get Book By ID", lambda: get_book_by_id(book_repo)),
-            "4": ("Get Book By ISBN", lambda: get_book_by_isbn(book_repo)),
-            "5": ("List Books", lambda: list_all_books(book_repo)),
-            "6": ("Add Member", lambda: add_member(member_repo)),
-            "7": ("List Members", lambda: list_members(member_repo)),
-            "8": ("Get Member By ID", lambda: get_member_by_id(member_repo)),
-            "9": ("Update Member Role", lambda: update_member_role(member_repo)),
-            "10": ("Delete Member", lambda: delete_member(member_repo)),
-            "11": ("Active Loans", lambda: list_active_loans(loan_repo)),
-            "12": ("Get Loan By ID", lambda: get_loan_by_id(loan_repo)),
-            "13": ("Mark Returned", lambda: mark_returned(book_repo, loan_repo)),
-            "14": ("Set Fine", lambda: set_fine(loan_repo)),
-            "15": ("Set Paid", lambda: set_paid(loan_repo)),
-            "16": ("Delete Loan", lambda: delete_loan(loan_repo)),
+
+            "1": ("Add Book", lambda: add_book(book_ser)),
+            "2": ("List Books", lambda: list_all_books(book_ser)),
+            "3": ("Get Book By ID", lambda: get_book_by_id(book_ser)),
+            "4": ("Get Book By ISBN", lambda: get_book_by_isbn(book_ser)),
+            "5": ("Delete Book", lambda: delete_book(book_ser)),
+            "6": ("Add Member", lambda: add_member(mem_ser)),
+            "7": ("List Members", lambda: list_members(mem_ser)),
+            "8": ("Get Member By ID", lambda: get_member_by_id(mem_ser)),
+            "9": ("Get Member By email", lambda: get_member_by_email(mem_ser)),
+            "10": ("Update Member Role", lambda: update_member_role(mem_ser)),
+            "11": ("Delete Member", lambda: delete_member(mem_ser)),
+            "12": ("List Loans", lambda: my_loans(loan_ser)),
+            "13": ("Get Loan By ID", lambda: get_loan_by_id(loan_ser)),
+            "14": ("Mark Returned", lambda: mark_returned(book_ser, loan_ser)),
+            "15": ("Set Paid", lambda: set_paid(loan_ser)),
+            "16": ("Delete Loan", lambda: delete_loan(loan_ser)),
             "17": ("Logout", logout_user),
-            "0": ("Exit", exit),
+            "18": ("Exit", exit),
         },
     }
 
