@@ -15,3 +15,8 @@
 [2026-01-12 10:56:56] ✅ update_role | ✔️ Role has been updated for mem_id 5
 [2026-01-12 10:57:14] ✅ delete_user | ✔️ User Deleted Successfully with mem_id 5
 [2026-01-12 10:57:48] ✅ create_member | ✅ Member aaryan added with ID: 6
+[2026-01-12 16:27:22] ✅ get_by_email | Id : 3, Name : System Admin, Email : admin@innova.com, Role : admin  
+[2026-01-12 16:27:31] ✅ get_by_email | Id : 3, Name : System Admin, Email : admin@innova.com, Role : admin  
+[2026-01-12 16:30:09] ✅ get_by_email | Id : 3, Name : System Admin, Email : admin@innova.com, Role : admin  
+[2026-01-12 16:30:29] ✅ get_by_email | Id : 3, Name : System Admin, Email : admin@innova.com, Role : admin  
+[2026-01-12 16:35:10] ✅ get_by_email | Id : 2, Name : Aditi, Email : aditi54@gmail.com, Role : member  

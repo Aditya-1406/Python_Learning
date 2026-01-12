@@ -64,7 +64,7 @@ def login(mem_ser : MemberService):
 # ---------- ADMIN FUNCTIONS ----------
 @admin_only
 def add_book(book_ser : BookService):
-    book_ser.create_book(
+    _,log = book_ser.create_book(
         Book(
             None,
             input("ISBN: "),
@@ -73,30 +73,32 @@ def add_book(book_ser : BookService):
             int(input("Copies: "))
         )
     )
-    print("✔️ Book added")
+    print(log)
 
 
 @admin_only
 def delete_book(book_ser : BookService):
-    book_ser.delete_book(int(input("Book ID: ")))
-    print("✔️ Book deleted")
+    log = book_ser.delete_book(int(input("Book ID: ")))
+    print(log)
 
 
 @admin_only
 def get_book_by_id(book_ser : BookService):
-    book = book_ser.get_by_id(int(input("Book ID: ")))
-    print(book or "❌ Not found")
+    _,log = book_ser.get_by_id(int(input("Book ID: ")))
+    print(log)
 
 
 @admin_only
 def get_book_by_isbn(book_ser : BookService):
-    book = book_ser.get_by_isbn(input("ISBN: "))
-    print(book or "❌ Not found")
+    _,log = book_ser.get_by_isbn(input("ISBN: "))
+    print(log)
 
 
 @member_only
 def list_all_books(book_ser : BookService):
-    book_ser.list_all_book()
+    _, arr = book_ser.list_all_book()
+    for i in arr:
+        print(i,end="")
 
 
 @admin_only

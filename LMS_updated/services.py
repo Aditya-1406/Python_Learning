@@ -112,53 +112,61 @@ class BookService:
     def __init__(self, book : BookRepository):
         self.book = book
 
+    @log_function("book_logs.txt")
     def create_book(self,books : Book):
         try:
             book_id = self.book.create(books)
             books.book_id = book_id
-            print(f"Book {books.title} Added with Book id : {books.book_id}")
-            return book_id
+            log = (f"Book {books.title} Added with Book id : {books.book_id}")
+            return book_id,log
         except  Exception as e :
-            print("❌ Some Error while Adding the book", e)
+            log=("❌ Some Error while Adding the book", e)
+            return None,log 
     
+    @log_function("book_logs.txt")
     def get_by_id(self,book_id: int):
         try:
             bo = self.book.get_by_id(book_id)
-            print(f"Id : {bo.book_id}, ISBN : {bo.isbn}, Title : {bo.title}, Author : {bo.author}, Copies : {bo.copies_available}  ")
-            return  bo
+            log = (f"Id : {bo.book_id}, ISBN : {bo.isbn}, Title : {bo.title}, Author : {bo.author}, Copies : {bo.copies_available}  ")
+            return  bo,log
         except Exception as e:
-            print("❌ Sorry, Some Error while Fetching the data", e)
-            return None
-        
+            log = ("❌ Sorry, Some Error while Fetching the data", e)
+            return None, log
+    
+    @log_function("book_logs.txt")
     def get_by_isbn(self,isbn:str):
         try:
             bo = self.book.get_by_isbn(isbn)
-            print(f"Id : {bo.book_id}, ISBN : {bo.isbn}, Title : {bo.title}, Author : {bo.author}, Copies : {bo.copies_available} ")
-            return bo
+            log = (f"Id : {bo.book_id}, ISBN : {bo.isbn}, Title : {bo.title}, Author : {bo.author}, Copies : {bo.copies_available} ")
+            return bo,log
         except Exception as e:
-            print("❌ Sorry, Some Error while Fetching the data", e)
-            return None
+            log =("❌ Sorry, Some Error while Fetching the data", e)
+            return None, log
     
+    @log_function("book_logs.txt")
     def list_all_book(self):
         try:
             book_list = self.book.list()
+            log_arr = []
             for bo in book_list:
-                print(f"Id : {bo.book_id}, ISBN : {bo.isbn}, Title : {bo.title}, Author : {bo.author}, Copies : {bo.copies_available} ")
-            return book_list
+                log_arr.append((f"Id : {bo.book_id}, ISBN : {bo.isbn}, Title : {bo.title}, Author : {bo.author}, Copies : {bo.copies_available}\n"))
+            return book_list,log_arr
         except Exception as e:
-            print("❌ Sorry, Some Error while Fetching the data", e)
-            return None
-        
+            log= ("❌ Sorry, Some Error while Fetching the data", e)
+            return None, log
+    
+    @log_function("book_logs.txt")
     def delete_book(self,book_id : int):
         try:
             is_deleted = self.book.delete(book_id)
             if is_deleted:
-                print("✔️ Book Deleted Successfully")
+                log =("✔️ Book Deleted Successfully")
             else:
-                print("❌ Book not found")
+                log = ("❌ Book not found")
+            return log
         except Exception as e:
-            print("❌ Some Error while deleting the record", e)
-            return None
+            log = ("❌ Some Error while deleting the record", e)
+            return log
   
     def increment_copy(self,book_id):
         try:

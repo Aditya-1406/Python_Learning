@@ -1,0 +1,6 @@
+[2026-01-12 16:30:36] ✅ list_all_book | ['Id : 1, ISBN : ISB123, Title : Getting Over you, Author : leisle b, Copies : 5\n', 'Id : 3, ISBN : ISB234, Title : Twisted Love, Author : Ana huang, Copies : 7\n']
+[2026-01-12 16:33:09] ✅ get_by_id | Id : 3, ISBN : ISB234, Title : Twisted Love, Author : Ana huang, Copies : 7  
+[2026-01-12 16:33:21] ✅ get_by_isbn | Id : 3, ISBN : ISB234, Title : Twisted Love, Author : Ana huang, Copies : 7 
+[2026-01-12 16:33:39] ✅ delete_book | FOREIGN KEY constraint failed
+[2026-01-12 16:34:30] ✅ create_book | Book Rani Tat Added with Book id : 4
+[2026-01-12 16:35:24] ✅ list_all_book | ['Id : 1, ISBN : ISB123, Title : Getting Over you, Author : leisle b, Copies : 5\n', 'Id : 4, ISBN : ISB345, Title : Rani Tat, Author : Manpreet, Copies : 3\n', 'Id : 3, ISBN : ISB234, Title : Twisted Love, Author : Ana huang, Copies : 7\n']
