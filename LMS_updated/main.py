@@ -154,10 +154,10 @@ def delete_member(mem_ser : MemberService):
 # ---------- LOANS ----------
 @member_only
 def borrow_book(book_ser : BookService, loan_ser : LoanService, mem_ser : MemberService):
-    user = mem_ser.get_by_id(memid)
+    user,_ = mem_ser.get_by_id(memid)
     book_id = int(input("Book ID: "))
 
-    loan_ser.create_loan(
+    _, log = loan_ser.create_loan(
         Loan(
             None,
             now_iso(),
@@ -169,45 +169,57 @@ def borrow_book(book_ser : BookService, loan_ser : LoanService, mem_ser : Member
             book_id
         )
     )
-    print("✔️ Book borrowed")
+    print(log)
 
 
 @member_only
 def my_loans(loan_ser : LoanService):
     if memid == None:
-        loan_ser.list_active_by_member(int(input("Enter the Member id:  ")))
+        _,log= loan_ser.list_active_by_member(int(input("Enter the Member id:  ")))
+        if(isinstance(log,list)):
+            for i in log:
+                print(i,end="")
+        else:
+            print(log)
     else:
-        loan_ser.list_active_by_member(memid)
+        _,log= loan_ser.list_active_by_member(memid)
+        if(isinstance(log,list)):
+            for i in log:
+                print(i,end="")
+        else:
+            print(log)
 
 
 @admin_only
 def get_loan_by_id(loan_ser : LoanService):
-    loan_ser.get_by_id(int(input("Enter the loan id : ")))
+    _,log =loan_ser.get_by_id(int(input("Enter the loan id : ")))
+    print(log)
 
 
 @admin_only
 def mark_returned(book_ser : BookService, loan_ser : LoanService):
     loan_id = int(input("Loan ID: "))
-    loan = loan_ser.get_by_id(loan_id)
+    loan,_ = loan_ser.get_by_id(loan_id)
     return_Date = input("Enter the Return date %Y-%m-%d : ")
     loan.returned_on = return_Date
-    is_return = loan_ser.mark_returned(loan_id, return_Date)
+    is_return,_ = loan_ser.mark_returned(loan_id, return_Date)
     book_ser.increment_copy(loan.book_id)
     if is_return:
         fine = calulate_fine(loan.borrowed_on,loan.returned_on)
-        loan_ser.set_fine(loan_id,fine)
-        print("✔️ Book returned")
+        _,log = loan_ser.set_fine(loan_id,fine)
+        print(log)
 
 
 @admin_only
 def set_paid(loan_ser : LoanService):
     loan_id = int(input("Loan ID: "))
-    loan_ser.set_paid(loan_id, True)
+    _,log=loan_ser.set_paid(loan_id, True)
+    print(log)
 
 @admin_only
 def delete_loan(loan_ser : LoanService):
-    loan_ser.delete(int(input("Loan ID: ")))
-    print("✔️ Loan deleted")
+    _,log = loan_ser.delete(int(input("Loan ID: ")))
+    print(log)
 
 
 # ---------- MENU ----------

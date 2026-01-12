@@ -195,17 +195,19 @@ class LoanService:
         self.books = books
         self.loans = loans
 
+    @log_function("loan_logs.txt")
     def create_loan(self, loan:Loan):
         try:
             loan_id = self.loans.create(loan)
             loan.loan_id = loan_id
-            print(f"✔️ Loan Created with Loan id : {loan_id}")
+            log = (f"✔️ Loan Created with Loan id : {loan_id}")
             self.books.decrement_copy(loan.book_id)
-            return loan_id
+            return loan_id,log
         except Exception as e:
             print("❌ Some Error While Creating the Loan")
-            return None
+            return None,log
     
+    @log_function("loan_logs.txt")
     def get_by_id(self, loan_id):
         try:
             lo = self.loans.get_by_id(loan_id)
@@ -220,71 +222,76 @@ class LoanService:
                 f"Member ID: {lo.member_id}, "
                 f"Book ID: {lo.book_id}"
             )
-            print(formatted)
-            return lo
+            log = (formatted)
+            return lo,log
 
         except Exception as e:
-            print("Some Error while fetching the data")
-            return None
+            log = ("Some Error while fetching the data")
+            return None,log
 
-    
+    @log_function("loan_logs.txt")
     def list_active_by_member(self, member_id: int) :
             """Return all active (not yet returned) loans of a member, printed and returned."""
             try:
                 loans = self.loans.list_active_by_member(member_id)
                 if not loans:
-                    print(f"ℹ️ No active loans for member_id={member_id}")
-                    return []
+                    log = (f"ℹ️ No active loans for member_id={member_id}")
+                    return loans,log
                 print(f"✅ Active loans for member_id={member_id}:")
+                lo_arr = []
                 for lo in loans:
-                    print("  • " + self._format_loan(lo))
-                return loans
+                    lo_arr.append(("  • " + self._format_loan(lo)))
+                return loans,lo_arr
             except Exception as e:
-                print(f"❌ Error while listing active loans for member_id={member_id}: {e}")
-                return None
-
+                log =(f"❌ Error while listing active loans for member_id={member_id}: {e}")
+                return None,log
+            
+    @log_function("loan_logs.txt")
     def mark_returned(self, loan_id: int, returned_on: str) -> bool:
         """Mark a loan as returned."""
         try:
             lo = self.loans.mark_returned(loan_id, returned_on)
-            print(f"✔️ Loan {loan_id} marked returned on {returned_on}")
+            log = (f"✔️ Loan {loan_id} marked returned on {returned_on}")
             self.books.increment_copy(lo.book_id)
-            return True
+            return True,log
         except Exception as e:
-            print(f"❌ Error while marking loan {loan_id} as returned: {e}")
-            return False
+            log = (f"❌ Error while marking loan {loan_id} as returned: {e}")
+            return False,log
 
+    @log_function("loan_logs.txt")
     def set_fine(self, loan_id: int, fine: int) -> bool:
         """Set/Update fine for a loan."""
         try:
             self.loans.set_fine(loan_id, fine)
             if fine:
-                print(f"✔️ Fine for loan {loan_id} id : ₹{fine}")
-            return True
+                log =(f"✔️ Fine for loan {loan_id} id : ₹{fine}")
+            return True,log
         except Exception as e:
-            print(f"❌ Error while setting fine for loan {loan_id}: {e}")
-            return False
-
+            log =(f"❌ Error while setting fine for loan {loan_id}: {e}")
+            return False,log
+        
+    @log_function("loan_logs.txt")
     def set_paid(self, loan_id: int, is_paid: bool) -> bool:
         """Mark fine as paid/unpaid."""
         try:
             self.loans.set_paid(loan_id, is_paid)
             state = "paid" if is_paid else "unpaid"
-            print(f"✔️ Loan {loan_id} marked as {state}")
-            return True
+            log = (f"✔️ Loan {loan_id} marked as {state}")
+            return True,log
         except Exception as e:
-            print(f"❌ Error while updating paid status for loan {loan_id}: {e}")
-            return False
-
+            log=(f"❌ Error while updating paid status for loan {loan_id}: {e}")
+            return False,log
+    
+    @log_function("loan_logs.txt")
     def delete(self, loan_id: int) -> bool:
         """Delete a loan record."""
         try:
             self.loans.delete(loan_id)
-            print(f"🗑️ Loan {loan_id} deleted")
-            return True
+            log = (f"🗑️ Loan {loan_id} deleted")
+            return True,log
         except Exception as e:
-            print(f"❌ Error while deleting loan {loan_id}: {e}")
-            return False
+            log = (f"❌ Error while deleting loan {loan_id}: {e}")
+            return False,log
 
     # --- helpers ---
 
@@ -300,6 +307,7 @@ class LoanService:
             f"Is Paid: {bool(lo.is_paid)}, "
             f"Member ID: {lo.member_id}, "
             f"Book ID: {lo.book_id}"
+            f"\n"
         )
 
 
