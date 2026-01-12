@@ -1,0 +1,24 @@
+aditya my age is 22
+aditya my age is 22
+
+aditya my age is 22
+
+Id : 2, Name : Aditi, Email : aditi54@gmail.com, Role : member  
+Id : 1, Name : System Admin, Email : admin@lms.com, Role : member  
+aditya my age is 22
+
+aditya my age is 22
+
+aditya my age is 22
+aditya my age is 22
+aditya my age is 22
+aditya my age is 22
+aditya my age is 22 uhh
+aditya my age is 22 uhh
+Member(member_id=2, name='Aditi', email='aditi54@gmail.com', password='aditi01', role='member')aditya my age is 22
+DONE
+aditya my age is 22
+DONE
+Id : 2, Name : Aditi, Email : aditi54@gmail.com, Role : member  
+Member(member_id=2, name='Aditi', email='aditi54@gmail.com', password='aditi01', role='member')aditya my age is 22 uhh
+5

@@ -5,6 +5,7 @@ from typing import Optional
 from db import Database
 from repo import MemberRepository, BookRepository, LoanRepository
 from models import Loan, Member, Book
+from loger import log_function
 
 
 ISO = "%Y-%m-%d"
@@ -28,73 +29,80 @@ def now_iso() -> str:
 def plus_days_iso(days: int) -> str:
     return (datetime.now(timezone.utc) + timedelta(days=days)).strftime(ISO)
 
-
 class MemberService:
 
     def __init__(self,member : MemberRepository):
         self.member = member
 
+    @log_function("member_logs.txt")
     def create_member(self,mem: Member):
         try:
             mem_id = self.member.create(mem)
             mem.member_id = mem_id
-            print(f"✅ Member {mem.name} added with ID: {mem.member_id}")
-            return mem_id
+            log = (f"✅ Member {mem.name} added with ID: {mem.member_id}")
+            return mem_id,log
         except Exception as e:
-            print(f"❌ Error adding member: {e}")
-            return None
+            log =(f"❌ Error adding member: {e}")
+            return None,log
         
     
+    @log_function("member_logs.txt")
     def get_by_id(self,mem_id: int):
         try:
             mem = self.member.get_by_id(mem_id)
-            print(f"Id : {mem.member_id}, Name : {mem.name}, Email : {mem.email}, Role : {mem.role}  ")
-            return mem
+            log = (f"Id : {mem.member_id}, Name : {mem.name}, Email : {mem.email}, Role : {mem.role}  ")
+            return mem,log
         except Exception as e:
-            print("❌ Sorry, Some Error while Fetching the data", e)
-            return None
-    
+            log=("❌ Sorry, Some Error while Fetching the data", e)
+            return None,log
+        
+    @log_function("member_logs.txt")
     def get_by_email(self,email: str):
         try:
             mem = self.member.get_by_email(email)
-            print(f"Id : {mem.member_id}, Name : {mem.name}, Email : {mem.email}, Role : {mem.role}  ")
-            return mem
+            log = (f"Id : {mem.member_id}, Name : {mem.name}, Email : {mem.email}, Role : {mem.role}  ")
+            return (mem, log)
         except Exception as e:
-            print("❌ Sorry, Some Error while Fetching the data", e)
-            return None
+            log = ("❌ Sorry, Some Error while Fetching the data", e)
+            return None,log
         
+    @log_function("member_logs.txt")  
     def list_all_members(self):
         try:
             mem_list = self.member.list()
+            log_arr = []
             for mem in mem_list:
-                print(f"Id : {mem.member_id}, Name : {mem.name}, Email : {mem.email}, Role : {mem.role}  ")
-            return mem_list
+                log_arr.append((f"Id : {mem.member_id}, Name : {mem.name}, Email : {mem.email}, Role : {mem.role}  "))
+            return mem_list,log_arr
         except Exception as e:
-            print("❌ Sorry, Some Error while Fetching the data", e)
-            return None
-        
+            log= ("❌ Sorry, Some Error while Fetching the data", e)
+            return None,log
+    
+    @log_function("member_logs.txt")
     def update_role(self,member_id:int, role:str):
         try:
             is_updated = self.member.update_role(member_id,role)
             if is_updated:
-                print("✔️ Role has been updated")
+                log = (f"✔️ Role has been updated for mem_id {member_id}")
             else:
-                print("❌ Member not found")
-            return 
+                log = ("❌ Member not found")
+            return log
         except Exception as e:
-            print("❌ Some error while updating the data", e)
-            return  None
-        
+            log = ("❌ Some error while updating the data", e)
+            return  None,log
+    
+    @log_function("member_logs.txt")
     def delete_user(self,mem_id : int):
         try:
             is_deleted = self.member.delete(mem_id)
             if is_deleted:
-                print("✔️ User Deleted Successfully")
+                log = (f"✔️ User Deleted Successfully with mem_id {mem_id}")
             else:
-                print("❌ User not found")
+                log = ("❌ User not found")
+            return log
         except Exception as e:
-            print("❌ Some Error while deleting the record", e)
-            return None
+            log = ("❌ Some Error while deleting the record", e)
+            return None,log
 
 
         

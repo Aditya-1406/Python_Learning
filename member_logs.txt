@@ -1,0 +1,17 @@
+[2026-01-12 10:46:10] ✅ get_by_email | Id : 3, Name : System Admin, Email : admin@innova.com, Role : admin  
+[2026-01-12 10:46:39] ✅ get_by_email | Id : 3, Name : System Admin, Email : admin@innova.com, Role : admin  
+[2026-01-12 10:49:27] ✅ get_by_email | Id : 3, Name : System Admin, Email : admin@innova.com, Role : admin  
+[2026-01-12 10:49:43] ✅ get_by_email | Id : 3, Name : System Admin, Email : admin@innova.com, Role : admin  
+[2026-01-12 10:49:55] ✅ list_all_members | ['Id : 5, Name : Aaryan, Email : aarya13@gmail.com, Role : member  ', 'Id : 2, Name : Aditi, Email : aditi54@gmail.com, Role : member  ', 'Id : 1, Name : System Admin, Email : admin@lms.com, Role : member  ', 'Id : 3, Name : System Admin, Email : admin@innova.com, Role : admin  ']
+[2026-01-12 10:51:30] ✅ get_by_email | Id : 3, Name : System Admin, Email : admin@innova.com, Role : admin  
+[2026-01-12 10:51:47] ✅ get_by_email | Id : 3, Name : System Admin, Email : admin@innova.com, Role : admin  
+[2026-01-12 10:52:19] ✅ get_by_email | Id : 3, Name : System Admin, Email : admin@innova.com, Role : admin  
+[2026-01-12 10:54:09] ✅ get_by_email | Id : 3, Name : System Admin, Email : admin@innova.com, Role : admin  
+[2026-01-12 10:54:19] ✅ get_by_email | Id : 3, Name : System Admin, Email : admin@innova.com, Role : admin  
+[2026-01-12 10:54:35] ✅ get_by_id | Id : 5, Name : Aaryan, Email : aarya13@gmail.com, Role : member  
+[2026-01-12 10:55:51] ✅ get_by_email | Id : 3, Name : System Admin, Email : admin@innova.com, Role : admin  
+[2026-01-12 10:56:07] ✅ get_by_email | Id : 3, Name : System Admin, Email : admin@innova.com, Role : admin  
+[2026-01-12 10:56:39] ✅ get_by_email | Id : 5, Name : Aaryan, Email : aarya13@gmail.com, Role : member  
+[2026-01-12 10:56:56] ✅ update_role | ✔️ Role has been updated for mem_id 5
+[2026-01-12 10:57:14] ✅ delete_user | ✔️ User Deleted Successfully with mem_id 5
+[2026-01-12 10:57:48] ✅ create_member | ✅ Member aaryan added with ID: 6

@@ -27,7 +27,8 @@ def init_services():
     loan_ser = LoanService(mem_ser,book_ser,loan_ser)
 
     # AUTO CREATE ADMIN
-    admin = mem_ser.get_by_email("admin@innova.com")
+    admin = mem_ser.get_by_email("admin@innova.com")[1]
+    print(admin)
     if not admin:
         mem_ser.create_member(
             Member(None, "System Admin", "admin@innova.com", "admin123", "admin")
@@ -45,7 +46,8 @@ def login(mem_ser : MemberService):
     email = input("Email: ")
     password = input("Password: ")
 
-    user = mem_ser.get_by_email(email)
+    user,log = mem_ser.get_by_email(email)
+
     if not user or user.password != password:
         print("❌ Invalid credentials")
         return
@@ -99,7 +101,7 @@ def list_all_books(book_ser : BookService):
 
 @admin_only
 def add_member(mem_ser : MemberService):
-    mem_ser.create_member(
+    log = mem_ser.create_member(
         Member(
             None,
             input("Name: "),
@@ -107,39 +109,44 @@ def add_member(mem_ser : MemberService):
             input("Password: "),
             input("Role (admin/member): ")
         )
-    )
-    print("✔️ Member added")
+    )[1]
+    print(log)
 
 
 @admin_only
 def list_members(mem_ser : MemberService):
-    mem_ser.list_all_members()
+    arr = mem_ser.list_all_members()[1]
+    for i in arr:
+        print(i)
 
 
 @admin_only
 def get_member_by_id(mem_ser : MemberService):
     if memid == None:
-        mem_ser.get_by_id(int(input("Member ID: ")))
+        log = mem_ser.get_by_id(int(input("Member ID: ")))[1]
+        print(log)
     else:
-        mem_ser.get_by_id(memid)
+        log = mem_ser.get_by_id(memid)[1]
+        print(log)
 
 @admin_only
 def get_member_by_email(mem_ser: MemberService):
-    mem_ser.get_by_email(input("Enter the mail Id : "))
+    log = mem_ser.get_by_email(input("Enter the mail Id : "))[1]
+    print(log)
 
 @admin_only
 def update_member_role(mem_ser : MemberService):
-    mem_ser.update_role(
+    log = mem_ser.update_role(
         int(input("Member ID: ")),
         input("New Role (admin/member): ")
     )
-    print("✔️ Role updated")
+    print(log)
 
 
 @admin_only
 def delete_member(mem_ser : MemberService):
-    mem_ser.delete_user(int(input("Member ID: ")))
-    print("✔️ Member deleted")
+    log = mem_ser.delete_user(int(input("Member ID: ")))
+    print(log)
 
 
 # ---------- LOANS ----------
@@ -208,7 +215,7 @@ def main():
     menus = {
         "guest": {
             "1": ("Login", lambda: login(mem_ser)),
-            "5": ("Exit", exit),
+            "2": ("Exit", exit),
         },
         "member": {
             "1": ("List Books", lambda: list_all_books(book_ser)),
