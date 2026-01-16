@@ -35,3 +35,7 @@
 [2026-01-12 17:06:43] ✅ get_by_email | Id : 3, Name : System Admin, Email : admin@innova.com, Role : admin  
 [2026-01-12 17:06:59] ✅ get_by_email | Id : 6, Name : aaryan, Email : aaryan13@gmail.com, Role : member  
 [2026-01-12 17:07:03] ✅ get_by_id | Id : 6, Name : aaryan, Email : aaryan13@gmail.com, Role : member  
+[2026-01-16 11:20:54] ✅ get_by_email | Id : 3, Name : System Admin, Email : admin@innova.com, Role : admin  
+[2026-01-16 11:21:16] ✅ get_by_email | Id : 3, Name : System Admin, Email : admin@innova.com, Role : admin  
+[2026-01-16 11:21:29] ✅ list_all_members | ['Id : 2, Name : Aditi, Email : aditi54@gmail.com, Role : member  ', 'Id : 1, Name : System Admin, Email : admin@lms.com, Role : member  ', 'Id : 3, Name : System Admin, Email : admin@innova.com, Role : admin  ', 'Id : 6, Name : aaryan, Email : aaryan13@gmail.com, Role : member  ']
+[2026-01-16 11:21:54] ✅ update_role | ✔️ Role has been updated for mem_id 6

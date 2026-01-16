@@ -1,8 +1,8 @@
 
-# lms/db.py
+
 import sqlite3
 from pathlib import Path
-from contextlib import contextmanager
+
 
 DB_FILE = Path("lms_update.db")
 

@@ -27,14 +27,14 @@ def init_services():
     loan_ser = LoanService(mem_ser,book_ser,loan_ser)
 
     # AUTO CREATE ADMIN
-    admin = mem_ser.get_by_email("admin@innova.com")[1]
-    print(admin)
+    admin,log = mem_ser.get_by_email("admin@gmail.com")
+    print(log)
     if not admin:
         mem_ser.create_member(
-            Member(None, "System Admin", "admin@innova.com", "admin123", "admin")
+            Member(None, "System Admin", "admin@gmail.com", "admin123", "admin")
         )
         print("👑 Default admin created")
-        print("➡ Email: admin@innova.com | Password: admin123")
+        print("➡ Email: admin@gmail.com | Password: admin123")
 
     return mem_ser, book_ser, loan_ser
 
